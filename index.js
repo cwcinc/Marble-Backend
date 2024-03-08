@@ -29,7 +29,6 @@ router.post('/sendtrack', function(req, res){
         headers: headers,
         body: body
       })
-      .then(response => response.json())
       .then(data => {
         res.send(data);
       })
