@@ -30,7 +30,8 @@ router.post('/sendtrack', function(req, res){
         body: body
       })
       .then(data => {
-        res.send(data);
+        console.log("status: ", data.status);
+        res.send(data.ok);
       })
     })};
 });
