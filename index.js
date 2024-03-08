@@ -8,24 +8,32 @@ const router = express.Router();
 const path = require('path')
 
 router.get('/', function(req, res){
-  fetch('https://discord.com/').then(response => response.text()).then(data => {
-    res.send(data);
-  })
+  res.send("oopsies");
 });
 app.use('/', router);
 
-router.get('/playlist', function(req, res){
-  fetch('https://www.youtube.com/playlist?list=PLBu3dXFyxej_q4qZuVBecE5sZ5IthE5eF').then(response => response.text()).then(data => {
-    res.send(data);
-  })
-});
-app.use('/', router);
+router.post('/sendtrack', function(req, res){
+  if (req.method === 'POST') {
+    let body = '';
 
-router.get('/views/:v', function(req, res){
-  const VID = req.params.v;
-  fetch('https://www.youtube.com/watch?v=' + VID).then(response => response.text()).then(data => {
-    res.send(data);
-  })
+    req.on('data', chunk => {
+      body += chunk.toString();
+    });
+
+    req.on('end', () => {
+      const headers = req.headers;
+      console.log('Received POST request with body:', body);
+      console.log("Headers: ", headers);
+      fetch('https://www.marblerun.at/tracks', {
+        method: 'POST',
+        headers: headers,
+        body: body
+      })
+      .then(response => response.json())
+      .then(data => {
+        res.send(data);
+      })
+    })};
 });
 app.use('/', router);
 
